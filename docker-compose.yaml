@@ -1,0 +1,7 @@
+services:
+  keploy-extension:
+    image: ${DESKTOP_PLUGIN_IMAGE}
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /var/run/docker.sock.raw:/var/run/docker.sock

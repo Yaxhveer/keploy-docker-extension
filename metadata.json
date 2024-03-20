@@ -1,0 +1,37 @@
+{
+  "icon": "docker.svg",
+  "vm": {
+    "composefile": "docker-compose.yaml",
+    "exposes": {
+      "socket": "docker.sock"
+    }
+  },
+  "ui": {
+    "dashboard-tab": {
+      "title": "Keploy",
+      "src": "index.html",
+      "root": "ui"
+    }
+  },
+  "host": {
+    "binaries": [
+      {
+        "darwin": [
+          {
+            "path": "/host/keploy.sh"
+          }
+        ],
+        "linux": [
+          {
+            "path": "/host/keploy.sh"
+          }
+        ],
+        "windows": [
+          {
+            "path": "/host/keploy.cmd"
+          }
+        ]
+      }
+    ]
+  }
+}
