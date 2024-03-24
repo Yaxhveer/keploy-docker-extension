@@ -41,7 +41,6 @@ LABEL org.opencontainers.image.title="Keploy" \
     com.docker.desktop.extension.api.version=">= 0.3.4" \
     com.docker.desktop.extension.icon="https://avatars.githubusercontent.com/u/92252339?s=64&v=4" \
     com.docker.extension.screenshots="[ \
-        
     ]" \
     com.docker.extension.detailed-description="<p>Keploy record API calls and replays them during testing, making it easy to use, powerful, and extensible.</p> \
         <h2 id="-features">✨ Here are Keploy's core features</h2> \
