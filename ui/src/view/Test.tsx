@@ -13,6 +13,7 @@ interface TestProp {
     cmd: string
     dir: string
     startStream: boolean
+    setOut: React.Dispatch<React.SetStateAction<string[]>>
     setCmd: React.Dispatch<React.SetStateAction<string>>
     setDir: React.Dispatch<React.SetStateAction<string>>
     setStartStream: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,9 +21,22 @@ interface TestProp {
     out: string[]
 }
 
-const Test: React.FC<TestProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, setStartStream, out, startStream }) => {
+const Test: React.FC<TestProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, setStartStream, out, setOut, startStream }) => {
 
     const ddClient = useDockerDesktopClient();
+
+    const stopKeployTest = async () => {
+        try {
+            const res = await ddClient.docker.cli.exec("stop keploy-v2", [])
+            console.log(res.stdout);
+            ddClient.desktopUI.toast.success("keploy stopped")
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setStartStream(false)
+            localStorage.removeItem("keployStream")
+        }
+    }
 
     const test = async () => {
         try {
@@ -54,9 +68,12 @@ const Test: React.FC<TestProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, set
                     <ChangeDir dir={dir} setDir={setDir} />
                     <CmdInput mode="test" setCmd={setCmd} cmd={cmd} />
                 </Stack>
-                <Button onClick={test} disabled={startStream} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' } }}>Test</Button>
+                <Stack direction="column" gap='8px'>
+                    <Button onClick={stopKeployTest} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' } }}>Stop Keploy</Button>
+                    <Button onClick={test} disabled={startStream} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' } }}>Test</Button>
+                </Stack>
             </Stack>
-            <Terminal output={out} />
+            <Terminal output={out} setOut={setOut}/>
         </Box>
     )
 }

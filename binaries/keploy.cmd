@@ -44,17 +44,17 @@ goto :eof
 
 :install
 start cmd /c "wsl %keploy% && timeout /t 2"
-docker rm keploy-v2
+docker rm keploy-v2 -f
 goto :eof
 
 :version
 wsl %keploy% -v
-docker rm keploy-v2
+docker rm keploy-v2 -f
 goto :eof
 
 :config
 wsl %keploy% generate-config
-docker rm keploy-v2
+docker rm keploy-v2 -f
 goto :eof
 
 :update
@@ -65,13 +65,13 @@ goto :eof
 :record
 wsl %keploy% record %flags%
 timeout /t 1
-docker rm keploy-v2
+docker rm keploy-v2 -f
 goto :eof
 
 :test
 wsl %keploy% test %flags%
 timeout /t 1
-docker rm keploy-v2
+docker rm keploy-v2 -f
 goto :eof
 
 exit /b 0

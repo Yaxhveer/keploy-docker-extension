@@ -16,10 +16,11 @@ const ChangeDir: React.FC<ChangeDirProps> = ({ dir, setDir }) => {
     const changeDir = async () => {
         try {
             const dir = await ddClient.desktopUI.dialog.showOpenDialog({ properties: ['openDirectory'] })
-            const dd = dir.filePaths
-            console.log(dir, dd);
-            setDir(dd[0])
-            localStorage.setItem("keployDir", dd[0])
+            if (dir.canceled) return;
+            const dd = dir.filePaths[0];
+            console.log(dd);
+            setDir(dd)
+            localStorage.setItem("keployDir", dd)
         } catch (err) {
             console.log(err);
         }
@@ -30,8 +31,7 @@ const ChangeDir: React.FC<ChangeDirProps> = ({ dir, setDir }) => {
             <Box sx={{ display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'flex-end', gap:'4px' }}>  
                 <TextField
                     label="Directory"
-                    defaultValue={ dir === "-1" ? "" : dir}
-                    value={ dir }
+                    value={ dir ? (dir === "-1" ? "" : dir) : "" }
                     InputProps={{
                         readOnly: true,
                     }}

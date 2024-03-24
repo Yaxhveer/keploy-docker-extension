@@ -46,6 +46,7 @@ export function App() {
                 out={out}
                 setStartStream={setStartStream}
                 startStream={startStream}
+                setOut={setOut}
             />
             break;
         case ModeEnum.test:
@@ -58,6 +59,7 @@ export function App() {
                 setStartStream={setStartStream}
                 out={out}
                 startStream={startStream}
+                setOut={setOut}
             />
             break;
         default:

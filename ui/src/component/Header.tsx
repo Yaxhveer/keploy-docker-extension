@@ -87,7 +87,7 @@ const Header:React.FC<HeaderProps> = ({ mode, setKeployMode }) => {
                     </Box>
                 </Stack>
                 <Stack gap="8px" direction="row">
-                    <Button variant='outlined' disabled sx={{ minWidth: '120px' }}>
+                    <Button variant='outlined'  disabled sx={{ minWidth: '120px' }}>
                         Config
                     </Button>
                     <Button onClick={handleNavBut} sx={{ minWidth: '120px' }}>

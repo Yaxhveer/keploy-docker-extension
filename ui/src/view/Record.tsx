@@ -12,6 +12,7 @@ interface RecordProp {
 	cmd: string
 	dir: string
 	startStream: boolean
+	setOut: React.Dispatch<React.SetStateAction<string[]>>
 	setCmd: React.Dispatch<React.SetStateAction<string>>
 	setDir: React.Dispatch<React.SetStateAction<string>>
 	setStartStream: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,14 +20,15 @@ interface RecordProp {
 	out: string[]
 }
 
-const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, out, startStream, setStartStream }) => {
+const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, out, setOut, startStream, setStartStream }) => {
 
 	const ddClient = useDockerDesktopClient();
 
 	const stopKeployRecord = async () => {
 		try {
-			const res = await ddClient.docker.cli.exec("stop -s SIGINT keploy-v2", [])
+			const res = await ddClient.docker.cli.exec("stop keploy-v2", [])
 			console.log(res.stdout);
+			ddClient.desktopUI.toast.success("keploy stopped")
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -56,7 +58,7 @@ const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd,
 	return (
 		<Box sx={{ padding: 0 }}>
 			<Header mode="Record" setKeployMode={setKeployMode} />
-			<Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{xs: 'stretch', sm: 'flex-end'}} gap={{xs: 0, sm: '16px'}}>
+			<Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{xs: 'stretch', sm: 'flex-end'}} gap={{xs: '8px', sm: '16px'}}>
 				<Stack flex={1}>
 					<ChangeDir dir={dir} setDir={setDir} />
 					<CmdInput mode="record" setCmd={setCmd} cmd={cmd} />
@@ -66,7 +68,7 @@ const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd,
 					<Button onClick={record} disabled={startStream} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' }}}>Record</Button>
 				</Stack>
 			</Stack>
-			<Terminal output={out} />
+			<Terminal output={out} setOut={setOut} />
 		</Box>
 	)
 }
