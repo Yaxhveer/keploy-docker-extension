@@ -23,24 +23,18 @@ COPY ui /ui
 RUN npm run build
 
 FROM alpine
-# LABEL org.opencontainers.image.title="keploy" \
-#     org.opencontainers.image.description="keploy" \
-#     org.opencontainers.image.vendor="keploy" \
-#     com.docker.desktop.extension.api.version="0.3.4" \
-#     com.docker.extension.screenshots="" \
-#     com.docker.desktop.extension.icon="" \
-#     com.docker.extension.detailed-description="" \
-#     com.docker.extension.publisher-url="" \
-#     com.docker.extension.additional-urls="" \
-#     com.docker.extension.categories="" \
-#     com.docker.extension.changelog=""
-
 LABEL org.opencontainers.image.title="Keploy" \
     org.opencontainers.image.description="Developer-centric API testing tool that creates backend tests along with built-in-mocks, faster than unit tests." \
     org.opencontainers.image.vendor="Keploy" \
     com.docker.desktop.extension.api.version=">= 0.3.4" \
     com.docker.desktop.extension.icon="https://avatars.githubusercontent.com/u/92252339?s=64&v=4" \
     com.docker.extension.screenshots="[ \
+        {\"alt\": \"Welcome page - light\", \"url\": \"https://raw.githubusercontent.com/Yaxhveer/keploy-docker-extension/main/images/welcome-light.png\"}, \
+        {\"alt\": \"Welcome page - dark\", \"url\": \"https://raw.githubusercontent.com/Yaxhveer/keploy-docker-extension/main/images/welcome-dark.png\"}, \
+        {\"alt\": \"Record page - light\", \"url\": \"https://raw.githubusercontent.com/Yaxhveer/keploy-docker-extension/main/images/record-light.png\"}, \
+        {\"alt\": \"Record page - dark\", \"url\": \"https://raw.githubusercontent.com/Yaxhveer/keploy-docker-extension/main/images/record-dark.png\"}, \
+        {\"alt\": \"Test page - light\", \"url\": \"https://raw.githubusercontent.com/Yaxhveer/keploy-docker-extension/main/images/test-light.png\"}, \
+        {\"alt\": \"Test page - dark\", \"url\": \"https://raw.githubusercontent.com/Yaxhveer/keploy-docker-extension/main/images/test-dark.png\"} \
     ]" \
     com.docker.extension.detailed-description="<p>Keploy record API calls and replays them during testing, making it easy to use, powerful, and extensible.</p> \
         <h2 id="-features">✨ Here are Keploy's core features</h2> \
@@ -54,7 +48,10 @@ LABEL org.opencontainers.image.title="Keploy" \
     " \
     com.docker.extension.publisher-url="https://keploy.io/" \
     com.docker.extension.additional-urls="[{\"title\":\"Getting started\",\"url\":\"https://keploy.io/docs/keploy-explained/introduction\"},{\"title\":\"Source code\",\"url\":\"https://github.com/Yaxhveer/keploy-docker-extension\"}]" \
-    com.docker.extension.changelog=""
+    com.docker.extension.changelog="<ul>\
+    <li>Version 1.0.0</li> \
+    </ul>" \
+    com.docker.extension.categories="1.0.0"
 
 
 COPY --from=builder /backend/bin/service /
