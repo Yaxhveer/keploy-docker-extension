@@ -42,6 +42,7 @@ COPY --chmod=0777 binaries/keploy.cmd /host/keploy.cmd
 COPY docker-compose.yaml .
 COPY metadata.json .
 COPY docker.svg .
+COPY logo.png .
 COPY --from=client-builder /ui/build ui
 
 CMD /service -socket /run/guest-services/docker.sock

@@ -4,16 +4,22 @@ setlocal enabledelayedexpansion
 if not "%1"=="-1" cd %1
 
 @REM removed -it
-set keploy=docker run --name keploy-v2 -p 16789:16789 --privileged --pid=host -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy --rm ghcr.io/keploy/keploy
+set keploy=docker run --name keploy-v2 -p 16789:16789 --privileged --pid=host -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy ghcr.io/keploy/keploy
 
 set command=%2
 
 REM shifted the arguments by two positions
 set "flags="
-set "first=1"
-for %%a in (%*) do (
-    if "!first!" == "0" set "flags=!flags! %%a"
-    set "first=0"
+set "count=0"
+for %%A in (%*) do (
+    set /a "count+=1"
+    if !count! gtr 2 (
+        if defined flags (
+            set "flags=!flags! %%A"
+        ) else if not "%%A" == "" (
+            set "flags=%%A"
+        )
+    )
 )
 
 
@@ -37,27 +43,35 @@ if "%command%"=="install" (
 goto :eof
 
 :install
-wsl %keploy%
+start cmd /c "wsl %keploy% && timeout /t 2"
+docker rm keploy-v2
 goto :eof
 
 :version
 wsl %keploy% -v
+docker rm keploy-v2
 goto :eof
 
 :config
 wsl %keploy% generate-config
+docker rm keploy-v2
 goto :eof
 
 :update
-wsl docker run --pull always --name keploy-v2 -p 16789:16789 --privileged --pid=host -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy --rm ghcr.io/keploy/keploy
+start cmd /c "wsl docker run --pull always --name keploy-v2 -p 16789:16789 --privileged --pid=host -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy --rm ghcr.io/keploy/keploy && timeout /t 2"
+
 goto :eof
 
 :record
 wsl %keploy% record %flags%
+timeout /t 1
+docker rm keploy-v2
 goto :eof
 
 :test
 wsl %keploy% test %flags%
+timeout /t 1
+docker rm keploy-v2
 goto :eof
 
 exit /b 0

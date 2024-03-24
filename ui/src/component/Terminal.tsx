@@ -1,56 +1,45 @@
-import Container from '@mui/material/Container';
 import React, { useEffect, useRef } from 'react';
-import { Terminal as XTerm } from 'xterm';
-import { FitAddon } from 'xterm-addon-fit';
+import AnsiToHtml from 'ansi-to-html';
+import Box from "@mui/material/Box";
+import { useMediaQuery } from '@mui/material';
 
 interface TerminalProps {
     output: string[];
 }
 
 const Terminal: React.FC<TerminalProps> = ({ output }) => {
-    const terminalRef = useRef<HTMLDivElement>(null);
-    const terminal = useRef<XTerm | null>(null);
+    
+    const dref = useRef<HTMLInputElement>(null);
+    const AnsiToHtmlConverter = new AnsiToHtml();
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const mode = prefersDarkMode ? 'dark' : 'light';
 
     useEffect(() => {
-        if (!terminalRef.current) return;
+        dref.current?.scrollIntoView({ behavior: "smooth", block: "end" })
+    }, [output])
 
-        // Create an xterm.js instance
-        const term = new XTerm();
-        terminal.current = term;
-
-        // Add fit addon to make terminal resizable
-        const fitAddon = new FitAddon();
-        term.loadAddon(fitAddon);
-        term.open(terminalRef.current);
-        fitAddon.fit();
-
-        // Handle terminal input
-        term.onData((data) => {
-            // Handle data input here
-            console.log('Input:', data);
-        });
-
-        return () => {
-            if (terminal.current) {
-                terminal.current.dispose();
-                terminal.current = null;
+    return (
+        <Box sx={{
+            height: '420px', 
+            overflowY: 'scroll', 
+            margin: '32px 0', 
+            padding: '0 8px',
+            background: (mode === 'dark' ? '#1c262d' : '#f2f2f2')
+            }}
+            
+        >
+            {
+                <pre
+                    ref={dref}
+                    style={{
+                        lineHeight: 1.3
+                    }}
+                    dangerouslySetInnerHTML={{ __html: AnsiToHtmlConverter.toHtml(output.join('<br>')) }}
+                />
             }
-        };
-    }, []);
+        </Box>
+    )
 
-    // Update terminal output when the output prop changes
-    useEffect(() => {
-        terminal.current?.clear()
-        if (terminal.current) {
-            // Write each line from the output array to the terminal
-            output.forEach((line) => {
-                terminal.current?.writeln(line);
-            });
-        }
-        terminal.current?.scrollToBottom();
-    }, [output]);
-
-    return <Container ref={terminalRef} style={{ height: '400px' , overflow: 'scroll'}} />;
-};
+}
 
 export default Terminal;

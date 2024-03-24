@@ -2,6 +2,14 @@ import { createDockerDesktopClient } from "@docker/extension-api-client";
 
 const ddClient = createDockerDesktopClient();
 
+export const useDockerDesktopClient = () => {
+    return ddClient;
+};
+
+export const sleep = (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export const setBinary = (): string => {
     if (ddClient.host.platform === 'win32') {
         return "keploy.cmd";
@@ -26,7 +34,8 @@ export const getVersion = async (): Promise<string | Error> => {
             throw new Error("Keploy not found in output");
         }
 
-        const keployVersion = output.substring(index, output.length).trim();
+        // index+6 to remove "keploy" from version 
+        let keployVersion = output.substring(index+6, output.length).trim();
         console.log('Current Keploy version:', keployVersion);
 
         return keployVersion;
@@ -35,3 +44,15 @@ export const getVersion = async (): Promise<string | Error> => {
         return err as Error;
     }
 };
+
+// export const generateConfig = async (dir: string) => {
+//   try {
+//     let binary = setBinary()
+//     console.log(dir);
+//     const result = await ddClient.extension.host?.cli.exec(binary, [dir, "config"]);
+//     console.log(result);
+//   } catch (err) {
+//     console.log(err);
+//     setOut([JSON.stringify(err)]);
+//   }
+// }
