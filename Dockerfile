@@ -23,17 +23,40 @@ COPY ui /ui
 RUN npm run build
 
 FROM alpine
-LABEL org.opencontainers.image.title="keploy" \
-    org.opencontainers.image.description="keploy" \
-    org.opencontainers.image.vendor="keploy" \
-    com.docker.desktop.extension.api.version="0.3.4" \
-    com.docker.extension.screenshots="" \
-    com.docker.desktop.extension.icon="" \
-    com.docker.extension.detailed-description="" \
-    com.docker.extension.publisher-url="" \
-    com.docker.extension.additional-urls="" \
-    com.docker.extension.categories="" \
+# LABEL org.opencontainers.image.title="keploy" \
+#     org.opencontainers.image.description="keploy" \
+#     org.opencontainers.image.vendor="keploy" \
+#     com.docker.desktop.extension.api.version="0.3.4" \
+#     com.docker.extension.screenshots="" \
+#     com.docker.desktop.extension.icon="" \
+#     com.docker.extension.detailed-description="" \
+#     com.docker.extension.publisher-url="" \
+#     com.docker.extension.additional-urls="" \
+#     com.docker.extension.categories="" \
+#     com.docker.extension.changelog=""
+
+LABEL org.opencontainers.image.title="Keploy" \
+    org.opencontainers.image.description="Developer-centric API testing tool that creates backend tests along with built-in-mocks, faster than unit tests." \
+    org.opencontainers.image.vendor="Keploy" \
+    com.docker.desktop.extension.api.version=">= 0.3.4" \
+    com.docker.desktop.extension.icon="https://avatars.githubusercontent.com/u/92252339?s=64&v=4" \
+    com.docker.extension.screenshots="[ \
+        
+    ]" \
+    com.docker.extension.detailed-description="<p>Keploy record API calls and replays them during testing, making it easy to use, powerful, and extensible.</p> \
+        <h2 id="-features">✨ Here are Keploy's core features</h2> \
+        <ul> \
+        <li>Combined Test Coverage: Merge your Keploy Tests with your fave testing libraries(JUnit, go-test, py-test, jest) to see a combined test coverage.</li> \
+        <li>EBPF Instrumentation: Keploy uses EBPF like a secret sauce to make integration code-less, language-agnostic, and oh-so-lightweight.</li> \
+        <li>CI/CD Integration: Run tests with mocks anywhere you like—locally on the CLI, in your CI pipeline (Jenkins, Github Actions..) , or even across a Kubernetes cluster</li> \
+        <li>Record-Replay Complex Flows: Keploy can record and replay complex, distributed API flows as mocks and stubs. It's like having a time machine for your tests—saving you tons of time!</li> \
+        <li>Multi-Purpose Mocks: You can also use keploy Mocks, as server Tests!</li> \
+        </ul> \
+    " \
+    com.docker.extension.publisher-url="https://keploy.io/" \
+    com.docker.extension.additional-urls="[{\"title\":\"Getting started\",\"url\":\"https://keploy.io/docs/keploy-explained/introduction\"},{\"title\":\"Source code\",\"url\":\"https://github.com/Yaxhveer/keploy-docker-extension\"}]" \
     com.docker.extension.changelog=""
+
 
 COPY --from=builder /backend/bin/service /
 

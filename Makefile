@@ -1,4 +1,4 @@
-IMAGE?=my/keploy
+IMAGE?=yaxhveer/keploy
 TAG?=latest
 
 BUILDER=buildx-multi-arch
