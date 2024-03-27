@@ -26,7 +26,7 @@ const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd,
 
 	const stopKeployRecord = async () => {
 		try {
-			const res = await ddClient.docker.cli.exec("stop keploy-v2", [])
+			const res = await ddClient.docker.cli.exec("stop -s SIGINT keploy-v2", [])
 			console.log(res.stdout);
 			ddClient.desktopUI.toast.success("keploy stopped")
 		} catch (err) {
