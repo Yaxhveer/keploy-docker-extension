@@ -7,6 +7,7 @@ import Header from "../component/Header";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Terminal from "../component/Terminal";
+import StopKeployBut from "../component/StopKeployBut";
 
 interface RecordProp {
 	cmd: string
@@ -24,18 +25,7 @@ const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd,
 
 	const ddClient = useDockerDesktopClient();
 
-	const stopKeployRecord = async () => {
-		try {
-			const res = await ddClient.docker.cli.exec("stop -s SIGINT keploy-v2", [])
-			console.log(res.stdout);
-			ddClient.desktopUI.toast.success("keploy stopped")
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setStartStream(false)
-			localStorage.removeItem("keployStream")
-		}
-	}
+
 
 	const record = async () => {
 		try {
@@ -52,6 +42,7 @@ const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd,
 		} finally {
 			setStartStream(false)
 			localStorage.removeItem("keployStream")
+			ddClient.desktopUI.toast.success("Record stopped.")
 		}
 	}
 
@@ -64,7 +55,7 @@ const Record: React.FC<RecordProp> = ({ setKeployMode, dir, setDir, cmd, setCmd,
 					<CmdInput mode="record" setCmd={setCmd} cmd={cmd} />
 				</Stack>
 				<Stack direction="column" gap='8px'>
-					<Button onClick={stopKeployRecord} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' }}}>Stop Keploy</Button>
+					<StopKeployBut setStartStream={setStartStream} />
 					<Button onClick={record} disabled={startStream} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' }}}>Record</Button>
 				</Stack>
 			</Stack>

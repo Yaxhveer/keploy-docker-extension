@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { useEffect } from "react";
 import Terminal from "../component/Terminal";
+import StopKeployBut from "../component/StopKeployBut";
 
 interface TestProp {
 	cmd: string
@@ -25,19 +26,6 @@ const Test: React.FC<TestProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, set
 
 	const ddClient = useDockerDesktopClient();
 
-	const stopKeployTest = async () => {
-		try {
-			const res = await ddClient.docker.cli.exec("stop -s SIGINT keploy-v2", [])
-			console.log(res.stdout);
-			ddClient.desktopUI.toast.success("keploy stopped")
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setStartStream(false)
-			localStorage.removeItem("keployStream")
-		}
-	}
-
 	const test = async () => {
 		try {
 			ddClient.desktopUI.toast.success("Test started.")
@@ -53,6 +41,7 @@ const Test: React.FC<TestProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, set
 		} finally {
 			setStartStream(false)
 			localStorage.removeItem("keployStream")
+			ddClient.desktopUI.toast.success("Test Stopped.")
 		}
 	}
 
@@ -69,7 +58,7 @@ const Test: React.FC<TestProp> = ({ setKeployMode, dir, setDir, cmd, setCmd, set
 					<CmdInput mode="test" setCmd={setCmd} cmd={cmd} />
 				</Stack>
 				<Stack direction="column" gap='8px'>
-					<Button onClick={stopKeployTest} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' } }}>Stop Keploy</Button>
+					<StopKeployBut setStartStream={setStartStream} />
 					<Button onClick={test} disabled={startStream} sx={{ minWidth: { xs: '100%', sm: '160px', md: '240px' } }}>Test</Button>
 				</Stack>
 			</Stack>
