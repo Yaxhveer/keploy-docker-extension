@@ -56,7 +56,7 @@ const Terminal: React.FC<TerminalProps> = ({ output, setOut }) => {
                     <pre
                         ref={dref}
                         style={{
-                            lineHeight: 1.3
+                            lineHeight: 0.55
                         }}
                         dangerouslySetInnerHTML={{ __html: AnsiToHtmlConverter.toHtml(output.join('<br>')) }}
                     />

@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 if not "%1"=="-1" cd %1
 
 @REM removed -it
-set keploy=docker run --name keploy-v2 -p 16789:16789 --privileged --pid=host -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy ghcr.io/keploy/keploy
+set keploy=docker run --name keploy-v2 -p 16789:16789 --privileged --pid=host -t -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy ghcr.io/keploy/keploy
 
 set command=%2
 
@@ -53,7 +53,7 @@ docker rm keploy-v2 -f
 goto :eof
 
 :config
-wsl %keploy% generate-config
+wsl %keploy% config --generate
 docker rm keploy-v2 -f
 goto :eof
 

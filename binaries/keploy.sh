@@ -7,7 +7,7 @@ fi
 # remove -rm and add it after a timeout in record and test
 
 # removed -it
-keploy="docker run --name keploy-v2 -p 16789:16789 --privileged --pid=host -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy ghcr.io/keploy/keploy"
+keploy="docker run --name keploy-v2 -p 16789:16789 --privileged --pid=host -t -v $(pwd):$(pwd) -w $(pwd) -v /sys/fs/cgroup:/sys/fs/cgroup -v /sys/kernel/debug:/sys/kernel/debug -v /sys/fs/bpf:/sys/fs/bpf -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.keploy:/root/.keploy ghcr.io/keploy/keploy"
 
 command=$2
 
@@ -28,7 +28,7 @@ case $command in
         ;;
 
     config)
-        $keploy generate-config
+        $keploy config --generate
         docker rm keploy-v2 -f
         ;;
 
