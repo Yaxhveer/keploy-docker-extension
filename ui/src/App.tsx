@@ -23,9 +23,11 @@ export function App() {
             const keployImage = await ddClient.docker.cli.exec("images ghcr.io/keploy/keploy", [])
             const exists = keployImage.stdout.includes("ghcr.io/keploy/keploy")
             setKeployExist(exists)
+            return exists
         } catch (err) {
             console.log(err);
             ddClient.desktopUI.toast.error(`Error while checking keploy image, ${err}`)
+            return false
         }
     }
 
@@ -33,6 +35,7 @@ export function App() {
         keployExist={keployExist}
         setKeployExist={setKeployExist}
         setKeployMode={setKeployMode}
+        checkKeployImage={checkKeployImage}
     />
 
     switch (keployMode) {
@@ -67,6 +70,7 @@ export function App() {
                 keployExist={keployExist}
                 setKeployExist={setKeployExist}
                 setKeployMode={setKeployMode}
+                checkKeployImage={checkKeployImage}
             />
             break;
     }

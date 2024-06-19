@@ -49,9 +49,9 @@ LABEL org.opencontainers.image.title="Keploy" \
     com.docker.extension.publisher-url="https://keploy.io/" \
     com.docker.extension.additional-urls="[{\"title\":\"Getting started\",\"url\":\"https://keploy.io/docs/keploy-explained/introduction\"},{\"title\":\"Source code\",\"url\":\"https://github.com/Yaxhveer/keploy-docker-extension\"}]" \
     com.docker.extension.changelog="<ul>\
-    <li>Version 1.0.1</li> \
+    <li>Version 1.0.3</li> \
     </ul>" \
-    com.docker.extension.categories="1.0.1"
+    com.docker.extension.categories="1.0.3"
 
 
 COPY --from=builder /backend/bin/service /

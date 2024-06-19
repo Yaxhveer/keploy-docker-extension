@@ -13,15 +13,14 @@ interface HomeProp {
     keployExist: boolean
     setKeployExist: React.Dispatch<React.SetStateAction<boolean>>
     setKeployMode: React.Dispatch<React.SetStateAction<ModeEnum>>
+    checkKeployImage: () => Promise<boolean>
 }
 
-const Home: React.FC<HomeProp> = ({ keployExist, setKeployExist, setKeployMode }) => {
+const Home: React.FC<HomeProp> = ({ keployExist, setKeployExist, setKeployMode, checkKeployImage }) => {
 
     const [installing, setInstalling] = useState<boolean>(false)
 
     const ddClient = useDockerDesktopClient();
-
-
 
     const updateKeploy = async () => {
         try {
@@ -45,8 +44,10 @@ const Home: React.FC<HomeProp> = ({ keployExist, setKeployExist, setKeployMode }
             let binary = setBinary();
             const result = await ddClient.extension.host?.cli.exec(binary, ["-1", "install"]);
             console.log(result);
-            setKeployExist(true);
-            ddClient.desktopUI.toast.success("Keploy Installed")
+            let exist = await checkKeployImage()
+            if (exist){
+                ddClient.desktopUI.toast.success("Keploy Installed")
+            }
         } catch (err) {
             console.log(err);
             ddClient.desktopUI.toast.error(`Error while installing keploy image, ${err}`)
